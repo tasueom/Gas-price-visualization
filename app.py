@@ -39,9 +39,13 @@ def upload():
             diesel = int(df.loc[i, '경유'])
             kerosene = int(df.loc[i, '실내등유'])
             
-            data = [gas_id, region, name, address, brand, self_type, 
-                    premium_gasoline, gasoline, diesel, kerosene]
-            db.insert_data(data)
+            try:
+                data = [gas_id, region, name, address, brand, self_type, 
+                        premium_gasoline, gasoline, diesel, kerosene]
+                db.insert_data(data)
+            except Exception as e:
+                flash(f'데이터 저장 중 오류 발생: {e}')
+                return redirect(url_for('upload'))
         flash('데이터가 성공적으로 저장되었습니다.')
         return redirect(url_for('index'))
     return ren('upload.html')
