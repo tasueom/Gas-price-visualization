@@ -97,46 +97,79 @@ def get_data(sort_by='gas_id', order='asc', page=1, per_page=20, keyword='', col
     # LIMIT과 OFFSET 계산
     offset = (page - 1) * per_page
     
+    # 유종 칼럼으로 정렬 시 0보다 큰 값만 조회
+    fuel_columns = ['premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+    fuel_filter = f"{sort_by} > 0" if sort_by in fuel_columns else ""
+    
     if keyword:
+        # 검색 조건 + 유종 필터
+        where_clause = f"{column} LIKE %s"
+        if fuel_filter:
+            where_clause += f" AND {fuel_filter}"
+        
         query = f"""
             SELECT gas_id, region, name, address, brand, self_type, 
             premium_gasoline, gasoline, diesel, kerosene 
             FROM gas_station_prices
-            WHERE {column} LIKE %s
+            WHERE {where_clause}
             ORDER BY {sort_by} {order}
             LIMIT {per_page} OFFSET {offset}
         """
         cur.execute(query, (f'%{keyword}%',))
     else:
-        query = f"""
-            SELECT gas_id, region, name, address, brand, self_type, 
-            premium_gasoline, gasoline, diesel, kerosene 
-            FROM gas_station_prices
-            ORDER BY {sort_by} {order}
-            LIMIT {per_page} OFFSET {offset}
-        """
+        # 유종 필터만
+        if fuel_filter:
+            query = f"""
+                SELECT gas_id, region, name, address, brand, self_type, 
+                premium_gasoline, gasoline, diesel, kerosene 
+                FROM gas_station_prices
+                WHERE {fuel_filter}
+                ORDER BY {sort_by} {order}
+                LIMIT {per_page} OFFSET {offset}
+            """
+        else:
+            query = f"""
+                SELECT gas_id, region, name, address, brand, self_type, 
+                premium_gasoline, gasoline, diesel, kerosene 
+                FROM gas_station_prices
+                ORDER BY {sort_by} {order}
+                LIMIT {per_page} OFFSET {offset}
+            """
         cur.execute(query)
     
     rows = cur.fetchall()
     conn.close()
     return rows
 
-def get_total_count(keyword='', column='gas_id'):
+def get_total_count(keyword='', column='gas_id', sort_by='gas_id'):
     """전체 데이터 개수 조회 (검색 조건 반영)"""
     conn = get_conn()
     cur = conn.cursor()
     
     # 허용된 칼럼 검증
     allowed_columns = ['gas_id', 'region', 'name', 'address', 'brand', 
-                        'self_type', 'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+                      'self_type', 'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
     if column not in allowed_columns:
         column = 'gas_id'
+    if sort_by not in allowed_columns:
+        sort_by = 'gas_id'
+    
+    # 유종 칼럼으로 정렬 시 0보다 큰 값만 조회
+    fuel_columns = ['premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+    fuel_filter = f"{sort_by} > 0" if sort_by in fuel_columns else ""
     
     if keyword:
-        query = f"SELECT COUNT(*) FROM gas_station_prices WHERE {column} LIKE %s"
+        where_clause = f"{column} LIKE %s"
+        if fuel_filter:
+            where_clause += f" AND {fuel_filter}"
+        query = f"SELECT COUNT(*) FROM gas_station_prices WHERE {where_clause}"
         cur.execute(query, (f'%{keyword}%',))
     else:
-        cur.execute("SELECT COUNT(*) FROM gas_station_prices")
+        if fuel_filter:
+            query = f"SELECT COUNT(*) FROM gas_station_prices WHERE {fuel_filter}"
+        else:
+            query = "SELECT COUNT(*) FROM gas_station_prices"
+        cur.execute(query)
     
     count = cur.fetchone()[0]
     conn.close()

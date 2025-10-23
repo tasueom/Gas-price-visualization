@@ -66,7 +66,7 @@ def data_list():
                         keyword=keyword, column=column)
     
     # 전체 페이지 수 계산
-    total_count = db.get_total_count(keyword=keyword, column=column)
+    total_count = db.get_total_count(keyword=keyword, column=column, sort_by=sort_by)
     total_pages = (total_count + per_page - 1) // per_page
     
     return ren('list.html', 
