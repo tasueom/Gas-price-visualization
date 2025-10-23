@@ -61,6 +61,23 @@ def create_table():
     finally:
         conn.close()
 
+def insert_data(data):
+    """데이터 삽입"""
+    conn = get_conn()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO gas_station_prices 
+            (gas_id, region, name, address, brand, self_type, 
+            premium_gasoline, gasoline, diesel, kerosene) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, data)
+        conn.commit()
+        print(f"Data inserted successfully for gas_id: {data[0]}")
+    except mysql.connector.Error as e:
+        raise e
+    finally:
+        conn.close()
 if __name__ == "__main__":
     init_db()
     create_table()
