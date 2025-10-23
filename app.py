@@ -50,8 +50,8 @@ def upload():
         return redirect(url_for('index'))
     return ren('upload.html')
 
-@app.route('/analysis')
-def analysis():
+@app.route('/list')
+def list():
     # URL 파라미터 받기
     sort_by = request.args.get('sort', 'gas_id')
     order = request.args.get('order', 'asc')
@@ -68,7 +68,7 @@ def analysis():
     total_count = db.get_total_count(keyword=keyword, column=column)
     total_pages = (total_count + per_page - 1) // per_page
     
-    return ren('analysis.html', 
+    return ren('list.html', 
                 data=data, 
                 sort_by=sort_by, 
                 order=order, 
