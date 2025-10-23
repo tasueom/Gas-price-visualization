@@ -26,6 +26,7 @@ def upload():
         
         #결측치 제거
         df = df.dropna(axis=0)
+        df = df.reset_index(drop=True)  # 인덱스 재설정
         
         for i in range(len(df)):
             gas_id = df.loc[i, '고유번호']
