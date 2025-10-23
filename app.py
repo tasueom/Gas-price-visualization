@@ -51,7 +51,7 @@ def upload():
     return ren('upload.html')
 
 @app.route('/list')
-def list():
+def data_list():
     # URL 파라미터 받기
     sort_by = request.args.get('sort', 'gas_id')
     order = request.args.get('order', 'asc')

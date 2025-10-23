@@ -4,7 +4,7 @@
 {% if total_count > 0 %}
 <h2>{% if keyword %}검색 결과 (총 {{ total_count }}개){% else %}전체 데이터 (총 {{ total_count }}개){% endif %}</h2>
 
-<form method="GET" action="{{ url_for('list') }}">
+<form method="GET" action="{{ url_for('data_list') }}">
     <input type="text" name="keyword" placeholder="검색어를 입력하세요" value="{{ keyword }}">
     <select name="column">
         <option value="gas_id" {% if column == 'gas_id' %}selected{% endif %}>고유번호</option>
@@ -14,7 +14,7 @@
     </select>
     <button type="submit">검색</button>
     {% if keyword %}
-        <a href="{{ url_for('list') }}">전체보기</a>
+        <a href="{{ url_for('data_list') }}">전체보기</a>
     {% endif %}
 </form>
 
