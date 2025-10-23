@@ -17,6 +17,7 @@ def init_db():
     try:
         cur.execute(f"CREATE DATABASE {DB_NAME} DEFAULT CHARACTER SET utf8mb4")
         conn.commit()
+        print(f"Database {DB_NAME} created successfully")
     except mysql.connector.Error as e:
         if e.errno == 1007:
             print(f"Database {DB_NAME} already exists")
@@ -49,6 +50,7 @@ def create_table():
                     kerosene INT NOT NULL)
                     """)
         conn.commit()
+        print("Table 'gas_station_prices' created successfully")
     except mysql.connector.Error as e:
         if e.errno == 1064:
             print("Syntax error in SQL query")
