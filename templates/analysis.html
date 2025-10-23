@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% if data %}
+<h2>전체 데이터</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>고유번호</th>
+            <th>지역</th>
+            <th>상호</th>
+            <th>주소</th>
+            <th>상표</th>
+            <th>셀프여부</th>
+            <th>고급휘발유</th>
+            <th>휘발유</th>
+            <th>경유</th>
+            <th>실내등유</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>{{ row[7] }}</td>
+            <td>{{ row[8] }}</td>
+            <td>{{ row[9] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="lead">등록된 데이터가 없습니다. 유가 정보 업로드를 먼저 진행해주십시오.</p>
+{% endif %}
+{% endblock %}

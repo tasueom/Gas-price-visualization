@@ -50,5 +50,10 @@ def upload():
         return redirect(url_for('index'))
     return ren('upload.html')
 
+@app.route('/analysis')
+def analysis():
+    data = db.get_data()
+    return ren('analysis.html', data=data)
+
 if __name__ == "__main__":
     app.run(debug=True)

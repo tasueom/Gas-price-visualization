@@ -78,6 +78,20 @@ def insert_data(data):
         raise e
     finally:
         conn.close()
+
+def get_data():
+    """데이터 조회"""
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+                SELECT gas_id, region, name, address, brand, self_type, 
+                premium_gasoline, gasoline, diesel, kerosene 
+                FROM gas_station_prices
+                """)
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
 if __name__ == "__main__":
     init_db()
     create_table()
