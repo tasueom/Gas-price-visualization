@@ -1,21 +1,58 @@
 {% extends "layout.html" %}
 
 {% block content %}
-{% if data %}
-<h2>전체 데이터</h2>
+{% if total_count > 0 %}
+<h2>전체 데이터 (총 {{ total_count }}개)</h2>
+
 <table border="1">
     <thead>
         <tr>
-            <th>고유번호</th>
-            <th>지역</th>
-            <th>상호</th>
+            <th>
+                <a href="?sort=gas_id&order={% if sort_by == 'gas_id' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    고유번호 {% if sort_by == 'gas_id' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort=region&order={% if sort_by == 'region' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    지역 {% if sort_by == 'region' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort=name&order={% if sort_by == 'name' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    상호 {% if sort_by == 'name' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
             <th>주소</th>
-            <th>상표</th>
-            <th>셀프여부</th>
-            <th>고급휘발유</th>
-            <th>휘발유</th>
-            <th>경유</th>
-            <th>실내등유</th>
+            <th>
+                <a href="?sort=brand&order={% if sort_by == 'brand' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    상표 {% if sort_by == 'brand' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort=self_type&order={% if sort_by == 'self_type' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    셀프여부 {% if sort_by == 'self_type' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort=premium_gasoline&order={% if sort_by == 'premium_gasoline' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    고급휘발유 {% if sort_by == 'premium_gasoline' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort=gasoline&order={% if sort_by == 'gasoline' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    휘발유 {% if sort_by == 'gasoline' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort=diesel&order={% if sort_by == 'diesel' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    경유 {% if sort_by == 'diesel' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort=kerosene&order={% if sort_by == 'kerosene' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                    실내등유 {% if sort_by == 'kerosene' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
+                </a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -35,6 +72,22 @@
         {% endfor %}
     </tbody>
 </table>
+
+<!-- 페이징 네비게이션 -->
+<div style="margin-top: 20px; text-align: center;">
+    {% if page > 1 %}
+        <a href="?sort={{ sort_by }}&order={{ order }}&page=1">처음</a>
+        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ page - 1 }}">이전</a>
+    {% endif %}
+    
+    <span style="margin: 0 10px;">{{ page }} / {{ total_pages }}</span>
+    
+    {% if page < total_pages %}
+        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ page + 1 }}">다음</a>
+        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ total_pages }}">마지막</a>
+    {% endif %}
+</div>
+
 {% else %}
 <p class="lead">등록된 데이터가 없습니다. 유가 정보 업로드를 먼저 진행해주십시오.</p>
 {% endif %}

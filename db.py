@@ -79,18 +79,34 @@ def insert_data(data):
     finally:
         conn.close()
 
-def get_data():
-    """데이터 조회"""
+def get_data(sort_by='gas_id', order='asc', page=1, per_page=20):
+    """데이터 조회 (페이징 및 정렬 지원)"""
     conn = get_conn()
     cur = conn.cursor()
-    cur.execute("""
-                SELECT gas_id, region, name, address, brand, self_type, 
-                premium_gasoline, gasoline, diesel, kerosene 
-                FROM gas_station_prices
-                """)
+    
+    # LIMIT과 OFFSET 계산
+    offset = (page - 1) * per_page
+    
+    query = f"""
+        SELECT gas_id, region, name, address, brand, self_type, 
+        premium_gasoline, gasoline, diesel, kerosene 
+        FROM gas_station_prices
+        ORDER BY {sort_by} {order}
+        LIMIT {per_page} OFFSET {offset}
+    """
+    cur.execute(query)
     rows = cur.fetchall()
     conn.close()
     return rows
+
+def get_total_count():
+    """전체 데이터 개수 조회"""
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM gas_station_prices")
+    count = cur.fetchone()[0]
+    conn.close()
+    return count
 
 if __name__ == "__main__":
     init_db()

@@ -52,8 +52,26 @@ def upload():
 
 @app.route('/analysis')
 def analysis():
-    data = db.get_data()
-    return ren('analysis.html', data=data)
+    # URL 파라미터 받기
+    sort_by = request.args.get('sort', 'gas_id')
+    order = request.args.get('order', 'asc')
+    page = int(request.args.get('page', 1))
+    per_page = 20
+    
+    # 데이터 조회
+    data = db.get_data(sort_by=sort_by, order=order, page=page, per_page=per_page)
+    
+    # 전체 페이지 수 계산
+    total_count = db.get_total_count()
+    total_pages = (total_count + per_page - 1) // per_page
+    
+    return ren('analysis.html', 
+                data=data, 
+                sort_by=sort_by, 
+                order=order, 
+                page=page, 
+                total_pages=total_pages,
+                total_count=total_count)
 
 if __name__ == "__main__":
     app.run(debug=True)
