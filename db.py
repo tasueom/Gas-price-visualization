@@ -79,31 +79,65 @@ def insert_data(data):
     finally:
         conn.close()
 
-def get_data(sort_by='gas_id', order='asc', page=1, per_page=20):
-    """데이터 조회 (페이징 및 정렬 지원)"""
+def get_data(sort_by='gas_id', order='asc', page=1, per_page=20, keyword='', column='gas_id'):
+    """데이터 조회 (페이징, 정렬, 검색 지원)"""
     conn = get_conn()
     cur = conn.cursor()
+    
+    # 허용된 칼럼 검증
+    allowed_columns = ['gas_id', 'region', 'name', 'address', 'brand', 
+                        'self_type', 'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+    if sort_by not in allowed_columns:
+        sort_by = 'gas_id'
+    if column not in allowed_columns:
+        column = 'gas_id'
+    if order not in ['asc', 'desc']:
+        order = 'asc'
     
     # LIMIT과 OFFSET 계산
     offset = (page - 1) * per_page
     
-    query = f"""
-        SELECT gas_id, region, name, address, brand, self_type, 
-        premium_gasoline, gasoline, diesel, kerosene 
-        FROM gas_station_prices
-        ORDER BY {sort_by} {order}
-        LIMIT {per_page} OFFSET {offset}
-    """
-    cur.execute(query)
+    if keyword:
+        query = f"""
+            SELECT gas_id, region, name, address, brand, self_type, 
+            premium_gasoline, gasoline, diesel, kerosene 
+            FROM gas_station_prices
+            WHERE {column} LIKE %s
+            ORDER BY {sort_by} {order}
+            LIMIT {per_page} OFFSET {offset}
+        """
+        cur.execute(query, (f'%{keyword}%',))
+    else:
+        query = f"""
+            SELECT gas_id, region, name, address, brand, self_type, 
+            premium_gasoline, gasoline, diesel, kerosene 
+            FROM gas_station_prices
+            ORDER BY {sort_by} {order}
+            LIMIT {per_page} OFFSET {offset}
+        """
+        cur.execute(query)
+    
     rows = cur.fetchall()
     conn.close()
     return rows
 
-def get_total_count():
-    """전체 데이터 개수 조회"""
+def get_total_count(keyword='', column='gas_id'):
+    """전체 데이터 개수 조회 (검색 조건 반영)"""
     conn = get_conn()
     cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM gas_station_prices")
+    
+    # 허용된 칼럼 검증
+    allowed_columns = ['gas_id', 'region', 'name', 'address', 'brand', 
+                        'self_type', 'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+    if column not in allowed_columns:
+        column = 'gas_id'
+    
+    if keyword:
+        query = f"SELECT COUNT(*) FROM gas_station_prices WHERE {column} LIKE %s"
+        cur.execute(query, (f'%{keyword}%',))
+    else:
+        cur.execute("SELECT COUNT(*) FROM gas_station_prices")
+    
     count = cur.fetchone()[0]
     conn.close()
     return count

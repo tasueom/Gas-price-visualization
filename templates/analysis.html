@@ -2,54 +2,68 @@
 
 {% block content %}
 {% if total_count > 0 %}
-<h2>전체 데이터 (총 {{ total_count }}개)</h2>
+<h2>{% if keyword %}검색 결과 (총 {{ total_count }}개){% else %}전체 데이터 (총 {{ total_count }}개){% endif %}</h2>
+
+<form method="GET" action="{{ url_for('analysis') }}">
+    <input type="text" name="keyword" placeholder="검색어를 입력하세요" value="{{ keyword }}">
+    <select name="column">
+        <option value="gas_id" {% if column == 'gas_id' %}selected{% endif %}>고유번호</option>
+        <option value="name" {% if column == 'name' %}selected{% endif %}>상호</option>
+        <option value="address" {% if column == 'address' %}selected{% endif %}>주소</option>
+        <option value="brand" {% if column == 'brand' %}selected{% endif %}>상표</option>
+    </select>
+    <button type="submit">검색</button>
+    {% if keyword %}
+        <a href="{{ url_for('analysis') }}">전체보기</a>
+    {% endif %}
+</form>
 
 <table border="1">
     <thead>
         <tr>
             <th>
-                <a href="?sort=gas_id&order={% if sort_by == 'gas_id' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=gas_id&order={% if sort_by == 'gas_id' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     고유번호 {% if sort_by == 'gas_id' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?sort=region&order={% if sort_by == 'region' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=region&order={% if sort_by == 'region' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     지역 {% if sort_by == 'region' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?sort=name&order={% if sort_by == 'name' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=name&order={% if sort_by == 'name' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     상호 {% if sort_by == 'name' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>주소</th>
             <th>
-                <a href="?sort=brand&order={% if sort_by == 'brand' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=brand&order={% if sort_by == 'brand' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     상표 {% if sort_by == 'brand' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?sort=self_type&order={% if sort_by == 'self_type' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=self_type&order={% if sort_by == 'self_type' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     셀프여부 {% if sort_by == 'self_type' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?sort=premium_gasoline&order={% if sort_by == 'premium_gasoline' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=premium_gasoline&order={% if sort_by == 'premium_gasoline' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     고급휘발유 {% if sort_by == 'premium_gasoline' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?sort=gasoline&order={% if sort_by == 'gasoline' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=gasoline&order={% if sort_by == 'gasoline' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     휘발유 {% if sort_by == 'gasoline' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?sort=diesel&order={% if sort_by == 'diesel' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=diesel&order={% if sort_by == 'diesel' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     경유 {% if sort_by == 'diesel' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?sort=kerosene&order={% if sort_by == 'kerosene' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}">
+                <a href="?sort=kerosene&order={% if sort_by == 'kerosene' and order == 'asc' %}desc{% else %}asc{% endif %}&page={{ page }}&keyword={{ keyword }}&column={{ column }}">
                     실내등유 {% if sort_by == 'kerosene' %}{% if order == 'asc' %}▲{% else %}▼{% endif %}{% endif %}
                 </a>
             </th>
@@ -76,15 +90,15 @@
 <!-- 페이징 네비게이션 -->
 <div style="margin-top: 20px; text-align: center;">
     {% if page > 1 %}
-        <a href="?sort={{ sort_by }}&order={{ order }}&page=1">처음</a>
-        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ page - 1 }}">이전</a>
+        <a href="?sort={{ sort_by }}&order={{ order }}&page=1&keyword={{ keyword }}&column={{ column }}">처음</a>
+        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ page - 1 }}&keyword={{ keyword }}&column={{ column }}">이전</a>
     {% endif %}
     
     <span style="margin: 0 10px;">{{ page }} / {{ total_pages }}</span>
     
     {% if page < total_pages %}
-        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ page + 1 }}">다음</a>
-        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ total_pages }}">마지막</a>
+        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ page + 1 }}&keyword={{ keyword }}&column={{ column }}">다음</a>
+        <a href="?sort={{ sort_by }}&order={{ order }}&page={{ total_pages }}&keyword={{ keyword }}&column={{ column }}">마지막</a>
     {% endif %}
 </div>
 
