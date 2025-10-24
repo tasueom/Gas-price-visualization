@@ -85,7 +85,7 @@ def analysis():
     rows = db.get_all_rows()
     
     # rows를 DataFrame으로 변환
-    columns = ['gas_id', 'region', 'name', 'address', 'brand', 'self_type', 
+    columns = ['고유번호', '지역', '상호', '주소', '상표', '셀프여부', 
                 '고급휘발유', '휘발유', '경유', '실내등유']
     df = pd.DataFrame(rows, columns=columns)
     
