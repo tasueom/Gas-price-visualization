@@ -5,13 +5,12 @@
 
 <div style="width: 500px; height: 500px; margin: 0 auto;">
     <h3>브랜드 지점 수</h3>
-    <canvas id="brand-chart" data-brand-info="{{ brand_data|tojson|safe }}"></canvas>
+    <canvas id="brand-chart"></canvas>
 </div>
 
 <script>
-    const canvas = document.getElementById('brand-chart');
-    const brandData = JSON.parse(canvas.dataset.brandInfo);
-    const ctx = canvas.getContext('2d');
+    const brandData = {{ brand_data|tojson }};
+    const ctx = document.getElementById('brand-chart').getContext('2d');
     new Chart(ctx, {
         type: 'pie',
         data: {
