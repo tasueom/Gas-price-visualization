@@ -86,7 +86,7 @@ def analysis():
     
     # rows를 DataFrame으로 변환
     columns = ['gas_id', 'region', 'name', 'address', 'brand', 'self_type', 
-               'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+                '고급휘발유', '휘발유', '경유', '실내등유']
     df = pd.DataFrame(rows, columns=columns)
     
     return ren('analysis.html')
