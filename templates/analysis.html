@@ -3,21 +3,47 @@
 {% block content %}
 <h2>분석 결과</h2>
 
-<div style="width: 500px; height: 500px; margin: 0 auto;">
-    <h3>브랜드 지점 수</h3>
-    <canvas id="brand-chart"></canvas>
+<div style="display: flex; justify-content: center; gap: 30px; margin: 20px auto;">
+    <div style="width: 500px; height: 500px;">
+        <h3>브랜드 지점 수</h3>
+        <canvas id="brand-chart"></canvas>
+    </div>
+    
+    <div style="width: 500px; height: 500px;">
+        <h3>셀프여부</h3>
+        <canvas id="self-type-chart"></canvas>
+    </div>
 </div>
 
 <script>
     const brandData = {{ brand_data|tojson }};
-    const ctx = document.getElementById('brand-chart').getContext('2d');
-    new Chart(ctx, {
+    const brandCtx = document.getElementById('brand-chart').getContext('2d');
+    new Chart(brandCtx, {
         type: 'pie',
         data: {
             labels: brandData.label,
             datasets: [{
                 label: '브랜드 지점 수',
                 data: brandData.value,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+        }
+    });
+</script>
+
+<script>
+    const selfTypeData = {{ self_type_data|tojson }};
+    const selfTypeCtx = document.getElementById('self-type-chart').getContext('2d');
+    new Chart(selfTypeCtx, {
+        type: 'pie',
+        data: {
+            labels: selfTypeData.label,
+            datasets: [{
+                label: '지점 수',
+                data: selfTypeData.value,
             }]
         },
         options: {

@@ -92,8 +92,12 @@ def analysis():
         "label": df['상표'].unique().tolist(),
         "value": df['상표'].value_counts().tolist(),
     }
+    self_type_data = {
+        "label": df['셀프여부'].unique().tolist(),
+        "value": df['셀프여부'].value_counts().tolist(),
+    }
     
-    return ren('analysis.html', brand_data=brand_data)
+    return ren('analysis.html', brand_data=brand_data, self_type_data=self_type_data)
 
 if __name__ == "__main__":
     app.run(debug=True)
