@@ -3,7 +3,12 @@
 {% block content %}
 <h2>분석 결과</h2>
 
-<div style="display: flex; justify-content: center; gap: 100px; margin: 20px auto;">
+<div class="btn-container">
+    <button id="pie-btn" onclick="showPieChart()">지점 분석</button>
+    <button id="bar-btn" onclick="showBarChart()">유가 분석</button>
+</div>
+
+<div id = "pie-chart-container" style="display: flex; justify-content: center; gap: 100px; margin: 20px auto;">
     <div style="width: 500px; height: 500px;">
         <h3>브랜드 지점 수</h3>
         <canvas id="brand-chart"></canvas>
@@ -75,5 +80,16 @@
             }
         }
     });
+</script>
+
+<!-- 차트 표시 숨김 제어 스크립트 -->
+<script>
+    function showPieChart() {
+        document.getElementById('pie-chart-container').style.display = 'flex';
+    }
+
+    function showBarChart() {
+        document.getElementById('pie-chart-container').style.display = 'none';
+    }
 </script>
 {% endblock %}
