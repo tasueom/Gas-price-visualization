@@ -88,8 +88,12 @@ def analysis():
     columns = ['고유번호', '지역', '상호', '주소', '상표', '셀프여부', 
                 '고급휘발유', '휘발유', '경유', '실내등유']
     df = pd.DataFrame(rows, columns=columns)
+    brand_data = {
+        "label": df['상표'].unique().tolist(),
+        "value": df['상표'].value_counts().tolist(),
+    }
     
-    return ren('analysis.html')
+    return ren('analysis.html', brand_data=brand_data)
 
 if __name__ == "__main__":
     app.run(debug=True)

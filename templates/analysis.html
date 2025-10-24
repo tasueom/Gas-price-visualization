@@ -2,6 +2,28 @@
 
 {% block content %}
 <h2>분석 결과</h2>
-<canvas id="brand-chart"></canvas>
 
+<div style="width: 500px; height: 500px; margin: 0 auto;">
+    <h3>브랜드 지점 수</h3>
+    <canvas id="brand-chart"></canvas>
+</div>
+
+<script>
+    const brandData = {{ brand_data|tojson }};
+    const ctx = document.getElementById('brand-chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: brandData.label,
+            datasets: [{
+                label: '브랜드 지점 수',
+                data: brandData.value,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+        }
+    });
+</script>
 {% endblock %}
