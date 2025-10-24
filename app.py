@@ -79,5 +79,17 @@ def data_list():
                 keyword=keyword,
                 column=column)
 
+@app.route('/analysis')
+def analysis():
+    # db.py 메서드로 rows 가져오기
+    rows = db.get_all_rows()
+    
+    # rows를 DataFrame으로 변환
+    columns = ['gas_id', 'region', 'name', 'address', 'brand', 'self_type', 
+               'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+    df = pd.DataFrame(rows, columns=columns)
+    
+    return ren('analysis.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

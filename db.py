@@ -148,7 +148,7 @@ def get_total_count(keyword='', column='gas_id', sort_by='gas_id'):
     
     # 허용된 칼럼 검증
     allowed_columns = ['gas_id', 'region', 'name', 'address', 'brand', 
-                      'self_type', 'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
+                        'self_type', 'premium_gasoline', 'gasoline', 'diesel', 'kerosene']
     if column not in allowed_columns:
         column = 'gas_id'
     if sort_by not in allowed_columns:
@@ -174,6 +174,20 @@ def get_total_count(keyword='', column='gas_id', sort_by='gas_id'):
     count = cur.fetchone()[0]
     conn.close()
     return count
+
+def get_all_rows():
+    """모든 데이터를 rows(튜플 리스트)로 반환"""
+    conn = get_conn()
+    cur = conn.cursor()
+    query = """
+        SELECT gas_id, region, name, address, brand, self_type, 
+        premium_gasoline, gasoline, diesel, kerosene 
+        FROM gas_station_prices
+    """
+    cur.execute(query)
+    rows = cur.fetchall()
+    conn.close()
+    return rows
 
 if __name__ == "__main__":
     init_db()

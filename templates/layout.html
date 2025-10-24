@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>전국 주유소 유가 시각화·분석 시스템</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     {% with messages = get_flashed_messages() %}
@@ -17,6 +18,7 @@
         <h1>전국 주유소 유가 시각화·분석 시스템</h1>
         <a href="{{ url_for('index') }}">메인으로</a>
         <a href="{{ url_for('data_list') }}">데이터 조회</a>
+        <a href="{{ url_for('analysis') }}">분석 결과</a>
         <a href="{{ url_for('upload') }}">유가 정보 업로드</a>
     </div>
     <div class="container">
