@@ -94,6 +94,9 @@ def upload():
         df = df.dropna(axis=0)
         df = df.reset_index(drop=True)  # 인덱스 재설정
         
+        success_count = 0
+        error_count = 0
+        
         for i in range(len(df)):
             gas_id = df.loc[i, '고유번호']
             region = df.loc[i, '지역']
@@ -110,10 +113,16 @@ def upload():
                 data = [gas_id, region, name, address, brand, self_type, 
                         premium_gasoline, gasoline, diesel, kerosene]
                 db.insert_data(data)
+                success_count += 1
             except Exception as e:
-                flash(f'데이터 저장 중 오류 발생: {e}')
-                return redirect(url_for('upload'))
-        flash('데이터가 성공적으로 저장되었습니다.')
+                error_count += 1
+                continue  # 오류 무시하고 다음 행으로
+        
+        # 결과 메시지
+        if error_count > 0:
+            flash(f'총 {len(df)}개 중 {success_count}개 성공, {error_count}개 실패')
+        else:
+            flash('데이터가 성공적으로 저장되었습니다.')
         return redirect(url_for('index'))
     return ren('upload.html')
 
