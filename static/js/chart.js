@@ -94,6 +94,19 @@ function showBarChart() {
                 datasets: [{
                     label: '유가 평균',
                     data: priceData.value,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',   // 고급휘발유 - 빨강
+                        'rgba(54, 162, 235, 0.7)',   // 휘발유 - 파랑
+                        'rgba(255, 206, 86, 0.7)',   // 경유 - 노랑
+                        'rgba(75, 192, 192, 0.7)'    // 실내등유 - 청록
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 2
                 }]
             },
             options: {
