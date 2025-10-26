@@ -1,0 +1,327 @@
+/* 전역 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 네비게이션 바 */
+.nav {
+    background-color: #ffffff;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.nav h1 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-right: auto;
+    font-weight: 600;
+}
+
+.nav a {
+    color: #555;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.nav a:hover {
+    background-color: #f0f0f0;
+    color: #2c3e50;
+}
+
+/* 컨테이너 */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* 제목 */
+h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+h3 {
+    color: #34495e;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.lead {
+    font-size: 1.1rem;
+    color: #666;
+    text-align: center;
+    padding: 3rem;
+}
+
+/* 버튼 컨테이너 */
+.btn-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+/* 버튼 스타일 */
+button, .nav a, input[type="submit"] {
+    cursor: pointer;
+}
+
+button {
+    background-color: #ffffff;
+    color: #555;
+    border: 2px solid #e0e0e0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: #f8f9fa;
+    border-color: #2c3e50;
+    color: #2c3e50;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* 폼 스타일 */
+form {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+input[type="text"],
+input[type="file"],
+select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+    background-color: #ffffff;
+}
+
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+input[type="text"] {
+    flex: 1;
+    min-width: 250px;
+}
+
+select {
+    min-width: 120px;
+}
+
+form button[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+}
+
+form button[type="submit"]:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+form a {
+    color: #e74c3c;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    font-weight: 500;
+}
+
+form a:hover {
+    background-color: #fee;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    background-color: #ffffff;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+}
+
+thead {
+    background-color: #f8f9fa;
+}
+
+th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+th a {
+    color: #2c3e50;
+    text-decoration: none;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+th a:hover {
+    color: #3498db;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 페이징 네비게이션 */
+div[style*="text-align: center"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+div[style*="text-align: center"] a {
+    color: #3498db;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 2px solid #3498db;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+div[style*="text-align: center"] a:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+div[style*="text-align: center"] span {
+    padding: 0.5rem 1rem;
+    color: #555;
+    font-weight: 600;
+}
+
+/* 차트 컨테이너 */
+#pie-chart-container,
+#bar-chart-container,
+#distribution-chart-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .nav h1 {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    input[type="text"],
+    select {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .btn-container {
+        flex-direction: column;
+    }
+    
+    button {
+        width: 100%;
+    }
+    
+    table {
+        font-size: 0.9rem;
+    }
+    
+    th, td {
+        padding: 0.75rem 0.5rem;
+    }
+}
+
+/* 스크롤바 스타일 (선택사항) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
+
