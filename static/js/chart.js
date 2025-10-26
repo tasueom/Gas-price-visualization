@@ -8,6 +8,10 @@ function showPieChart() {
     document.getElementById('pie-chart-container').style.display = 'flex';
     document.getElementById('bar-chart-container').style.display = 'none';
     
+    // hidden input 업데이트
+    const chartTypeInput = document.getElementById('chart-type-input');
+    if (chartTypeInput) chartTypeInput.value = 'pie';
+    
     // 브랜드 차트가 없으면 생성
     if (!brandChart) {
         const brandCtx = document.getElementById('brand-chart').getContext('2d');
@@ -84,6 +88,10 @@ function showBarChart() {
     document.getElementById('pie-chart-container').style.display = 'none';
     document.getElementById('bar-chart-container').style.display = 'flex';
     
+    // hidden input 업데이트
+    const chartTypeInput = document.getElementById('chart-type-input');
+    if (chartTypeInput) chartTypeInput.value = 'bar';
+    
     // 차트가 없으면 생성
     if (!priceChart) {
         const priceCtx = document.getElementById('price-chart').getContext('2d');
@@ -135,8 +143,12 @@ function showBarChart() {
     }
 }
 
-// 페이지 로드 시 파이 차트 자동 표시
+// 페이지 로드 시 차트 표시 (URL 파라미터에 따라)
 window.addEventListener('DOMContentLoaded', function() {
-    showPieChart();
+    if (currentChartType === 'bar') {
+        showBarChart();
+    } else {
+        showPieChart();
+    }
 });
 

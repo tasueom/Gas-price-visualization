@@ -8,7 +8,7 @@
     <button id="bar-btn" onclick="showBarChart()">유가 분석</button>
 </div>
 
-<form method="GET">
+<form method="GET" id="search-form">
     <input type="text" name="keyword" placeholder="검색어를 입력하세요" value="{{ keyword }}">
     <select name="column">
         <option value="gas_id" {% if column == 'gas_id' %}selected{% endif %}>고유번호</option>
@@ -16,9 +16,10 @@
         <option value="address" {% if column == 'address' %}selected{% endif %}>주소</option>
         <option value="brand" {% if column == 'brand' %}selected{% endif %}>상표</option>
     </select>
+    <input type="hidden" name="chart_type" id="chart-type-input" value="{{ chart_type }}">
     <button type="submit">검색</button>
     {% if keyword %}
-        <a href="{{ url_for('analysis') }}">전체보기</a>
+        <a href="{{ url_for('analysis') }}?chart_type={{ chart_type }}">전체보기</a>
     {% endif %}
 </form>
 
@@ -46,6 +47,7 @@
     const brandData = {{ brand_data|tojson }};
     const selfTypeData = {{ self_type_data|tojson }};
     const priceData = {{ price_data|tojson }};
+    const currentChartType = "{{ chart_type }}";
 </script>
 
 <!-- 차트 함수 및 로직 -->
