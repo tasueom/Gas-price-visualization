@@ -29,64 +29,11 @@
 
 <script>
     const brandData = {{ brand_data|tojson }};
-    const brandCtx = document.getElementById('brand-chart').getContext('2d');
-    new Chart(brandCtx, {
-        type: 'pie',
-        data: {
-            labels: brandData.label,
-            datasets: [{
-                label: '브랜드 지점 수',
-                data: brandData.value,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const value = context.parsed;
-                            const percent = ((value / total) * 100).toFixed(1);
-                            return `${context.label}: ${value}개 (${percent}%)`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-
     const selfTypeData = {{ self_type_data|tojson }};
-    const selfTypeCtx = document.getElementById('self-type-chart').getContext('2d');
-    new Chart(selfTypeCtx, {
-        type: 'pie',
-        data: {
-            labels: selfTypeData.label,
-            datasets: [{
-                label: '지점 수',
-                data: selfTypeData.value,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const value = context.parsed;
-                            const percent = ((value / total) * 100).toFixed(1);
-                            return `${context.label}: ${value}개 (${percent}%)`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-
     const priceData = {{ price_data|tojson }};
+    
+    let brandChart = null;
+    let selfTypeChart = null;
     let priceChart = null;
 </script>
 
@@ -95,6 +42,76 @@
     function showPieChart() {
         document.getElementById('pie-chart-container').style.display = 'flex';
         document.getElementById('bar-chart-container').style.display = 'none';
+        
+        // 브랜드 차트가 없으면 생성
+        if (!brandChart) {
+            const brandCtx = document.getElementById('brand-chart').getContext('2d');
+            brandChart = new Chart(brandCtx, {
+                type: 'pie',
+                data: {
+                    labels: brandData.label,
+                    datasets: [{
+                        label: '브랜드 지점 수',
+                        data: brandData.value,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = context.parsed;
+                                    const percent = ((value / total) * 100).toFixed(1);
+                                    return `${context.label}: ${value}개 (${percent}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            // 차트가 이미 있으면 애니메이션 다시 실행
+            brandChart.reset();
+            brandChart.update();
+        }
+        
+        // 셀프여부 차트가 없으면 생성
+        if (!selfTypeChart) {
+            const selfTypeCtx = document.getElementById('self-type-chart').getContext('2d');
+            selfTypeChart = new Chart(selfTypeCtx, {
+                type: 'pie',
+                data: {
+                    labels: selfTypeData.label,
+                    datasets: [{
+                        label: '지점 수',
+                        data: selfTypeData.value,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = context.parsed;
+                                    const percent = ((value / total) * 100).toFixed(1);
+                                    return `${context.label}: ${value}개 (${percent}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            // 차트가 이미 있으면 애니메이션 다시 실행
+            selfTypeChart.reset();
+            selfTypeChart.update();
+        }
     }
 
     function showBarChart() {
@@ -138,5 +155,10 @@
             priceChart.update();
         }
     }
+    
+    // 페이지 로드 시 파이 차트 자동 표시
+    window.addEventListener('DOMContentLoaded', function() {
+        showPieChart();
+    });
 </script>
 {% endblock %}
