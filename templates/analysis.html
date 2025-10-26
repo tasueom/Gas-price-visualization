@@ -4,8 +4,9 @@
 <h2>분석 결과</h2>
 
 <div class="btn-container">
-    <button id="bar-btn" onclick="showBarChart()">유가 분석</button>
+    <button id="bar-btn" onclick="showBarChart()">유가 평균 분석</button>
     <button id="pie-btn" onclick="showPieChart()">지점 분석</button>
+    <button id="distribution-btn" onclick="showDistributionChart()">유가 분포 분석</button>
 </div>
 
 <form method="GET" id="search-form">
@@ -39,6 +40,15 @@
     <div style="width: 1000px; height: 1000px;">
         <h3>유가 평균</h3>
         <canvas id="price-chart"></canvas>
+    </div>
+</div>
+
+<div id="distribution-chart-container" style="display: none; justify-content: center; margin: 20px auto;">
+    <div style="max-width: 1400px;">
+        <h3>전국 유가 분포 분석 (히스토그램 + KDE)</h3>
+        <img src="{{ url_for('static', filename='img/fuel_distribution.png') }}" 
+             alt="유가 분포 히스토그램" 
+             style="width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
     </div>
 </div>
 
