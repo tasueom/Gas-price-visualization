@@ -62,8 +62,11 @@ def create_distribution_chart():
     
     plt.tight_layout()
     
-    # 이미지 저장
-    img_path = os.path.join('static', 'img', 'fuel_distribution.png')
+    # 이미지 저장 (폴더가 없으면 생성)
+    img_dir = os.path.join('static', 'img')
+    os.makedirs(img_dir, exist_ok=True)
+    
+    img_path = os.path.join(img_dir, 'fuel_distribution.png')
     plt.savefig(img_path, dpi=100, bbox_inches='tight')
     plt.close()
     
