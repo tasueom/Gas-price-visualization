@@ -81,8 +81,12 @@ def data_list():
 
 @app.route('/analysis')
 def analysis():
-    # db.py 메서드로 rows 가져오기
-    rows = db.get_all_rows()
+    # URL 파라미터 받기
+    keyword = request.args.get('keyword', '')
+    column = request.args.get('column', 'gas_id')
+    
+    # db.py 메서드로 rows 가져오기 (검색 조건 반영)
+    rows = db.get_all_rows(keyword=keyword, column=column)
     
     # rows를 DataFrame으로 변환
     columns = ['고유번호', '지역', '상호', '주소', '상표', '셀프여부', 
@@ -112,7 +116,12 @@ def analysis():
         ]
     }
     
-    return ren('analysis.html', brand_data=brand_data, self_type_data=self_type_data, price_data=price_data)
+    return ren('analysis.html', 
+                keyword=keyword,
+                column=column,
+                brand_data=brand_data, 
+                self_type_data=self_type_data, 
+                price_data=price_data)
 
 if __name__ == "__main__":
     app.run(debug=True)

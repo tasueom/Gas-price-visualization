@@ -8,6 +8,20 @@
     <button id="bar-btn" onclick="showBarChart()">유가 분석</button>
 </div>
 
+<form method="GET">
+    <input type="text" name="keyword" placeholder="검색어를 입력하세요" value="{{ keyword }}">
+    <select name="column">
+        <option value="gas_id" {% if column == 'gas_id' %}selected{% endif %}>고유번호</option>
+        <option value="name" {% if column == 'name' %}selected{% endif %}>상호</option>
+        <option value="address" {% if column == 'address' %}selected{% endif %}>주소</option>
+        <option value="brand" {% if column == 'brand' %}selected{% endif %}>상표</option>
+    </select>
+    <button type="submit">검색</button>
+    {% if keyword %}
+        <a href="{{ url_for('analysis') }}">전체보기</a>
+    {% endif %}
+</form>
+
 <div id = "pie-chart-container" style="display: flex; justify-content: center; gap: 100px; margin: 20px auto;">
     <div style="width: 500px; height: 500px;">
         <h3>브랜드 지점 수</h3>

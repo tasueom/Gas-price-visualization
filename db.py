@@ -175,16 +175,32 @@ def get_total_count(keyword='', column='gas_id', sort_by='gas_id'):
     conn.close()
     return count
 
-def get_all_rows():
-    """모든 데이터를 rows(튜플 리스트)로 반환"""
+def get_all_rows(keyword='', column='gas_id'):
+    """모든 데이터를 rows(튜플 리스트)로 반환 (검색 조건 반영)"""
     conn = get_conn()
     cur = conn.cursor()
-    query = """
-        SELECT gas_id, region, name, address, brand, self_type, 
-        premium_gasoline, gasoline, diesel, kerosene 
-        FROM gas_station_prices
-    """
-    cur.execute(query)
+    
+    # 허용된 칼럼 검증
+    allowed_columns = ['gas_id', 'region', 'name', 'address', 'brand', 'self_type']
+    if column not in allowed_columns:
+        column = 'gas_id'
+    
+    if keyword:
+        query = f"""
+            SELECT gas_id, region, name, address, brand, self_type, 
+            premium_gasoline, gasoline, diesel, kerosene 
+            FROM gas_station_prices
+            WHERE {column} LIKE %s
+        """
+        cur.execute(query, (f'%{keyword}%',))
+    else:
+        query = """
+            SELECT gas_id, region, name, address, brand, self_type, 
+            premium_gasoline, gasoline, diesel, kerosene 
+            FROM gas_station_prices
+        """
+        cur.execute(query)
+    
     rows = cur.fetchall()
     conn.close()
     return rows
