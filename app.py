@@ -88,6 +88,10 @@ def analysis():
     columns = ['고유번호', '지역', '상호', '주소', '상표', '셀프여부', 
                 '고급휘발유', '휘발유', '경유', '실내등유']
     df = pd.DataFrame(rows, columns=columns)
+    
+    # 유가 평균 계산을 위해 0을 결측치로 변환
+    df = df.replace(0, pd.NA)
+    
     brand_data = {
         "label": df['상표'].unique().tolist(),
         "value": df['상표'].value_counts().tolist(),
@@ -97,7 +101,18 @@ def analysis():
         "value": df['셀프여부'].value_counts().tolist(),
     }
     
-    return ren('analysis.html', brand_data=brand_data, self_type_data=self_type_data)
+    # 유종별 평균 가격
+    price_data = {
+        "label": ["고급휘발유", "휘발유", "경유", "실내등유"],
+        "value": [
+            round(df['고급휘발유'].mean(), 2),
+            round(df['휘발유'].mean(), 2),
+            round(df['경유'].mean(), 2),
+            round(df['실내등유'].mean(), 2)
+        ]
+    }
+    
+    return ren('analysis.html', brand_data=brand_data, self_type_data=self_type_data, price_data=price_data)
 
 if __name__ == "__main__":
     app.run(debug=True)
