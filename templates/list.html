@@ -78,10 +78,10 @@
             <td>{{ row[3] }}</td>
             <td>{{ row[4] }}</td>
             <td>{{ row[5] }}</td>
-            <td>{{ row[6] }}</td>
-            <td>{{ row[7] }}</td>
-            <td>{{ row[8] }}</td>
-            <td>{{ row[9] }}</td>
+            <td>{{ '판매 X' if row[6] == 0 else row[6] }}</td>
+            <td>{{ '판매 X' if row[7] == 0 else row[7] }}</td>
+            <td>{{ '판매 X' if row[8] == 0 else row[8] }}</td>
+            <td>{{ '판매 X' if row[9] == 0 else row[9] }}</td>
         </tr>
         {% endfor %}
     </tbody>
