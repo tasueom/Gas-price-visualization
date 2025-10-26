@@ -84,7 +84,7 @@ def analysis():
     # URL 파라미터 받기
     keyword = request.args.get('keyword', '')
     column = request.args.get('column', 'gas_id')
-    chart_type = request.args.get('chart_type', 'pie')
+    chart_type = request.args.get('chart_type', 'bar')
     
     # db.py 메서드로 rows 가져오기 (검색 조건 반영)
     rows = db.get_all_rows(keyword=keyword, column=column)
