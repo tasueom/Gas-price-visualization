@@ -1,0 +1,129 @@
+// 차트 객체 저장 변수
+let brandChart = null;
+let selfTypeChart = null;
+let priceChart = null;
+
+// 파이 차트 표시 함수
+function showPieChart() {
+    document.getElementById('pie-chart-container').style.display = 'flex';
+    document.getElementById('bar-chart-container').style.display = 'none';
+    
+    // 브랜드 차트가 없으면 생성
+    if (!brandChart) {
+        const brandCtx = document.getElementById('brand-chart').getContext('2d');
+        brandChart = new Chart(brandCtx, {
+            type: 'pie',
+            data: {
+                labels: brandData.label,
+                datasets: [{
+                    label: '브랜드 지점 수',
+                    data: brandData.value,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const value = context.parsed;
+                                const percent = ((value / total) * 100).toFixed(1);
+                                return `${context.label}: ${value}개 (${percent}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        // 차트가 이미 있으면 애니메이션 다시 실행
+        brandChart.reset();
+        brandChart.update();
+    }
+    
+    // 셀프여부 차트가 없으면 생성
+    if (!selfTypeChart) {
+        const selfTypeCtx = document.getElementById('self-type-chart').getContext('2d');
+        selfTypeChart = new Chart(selfTypeCtx, {
+            type: 'pie',
+            data: {
+                labels: selfTypeData.label,
+                datasets: [{
+                    label: '지점 수',
+                    data: selfTypeData.value,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const value = context.parsed;
+                                const percent = ((value / total) * 100).toFixed(1);
+                                return `${context.label}: ${value}개 (${percent}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        // 차트가 이미 있으면 애니메이션 다시 실행
+        selfTypeChart.reset();
+        selfTypeChart.update();
+    }
+}
+
+// 막대 차트 표시 함수
+function showBarChart() {
+    document.getElementById('pie-chart-container').style.display = 'none';
+    document.getElementById('bar-chart-container').style.display = 'flex';
+    
+    // 차트가 없으면 생성
+    if (!priceChart) {
+        const priceCtx = document.getElementById('price-chart').getContext('2d');
+        priceChart = new Chart(priceCtx, {
+            type: 'bar',
+            data: {
+                labels: priceData.label,
+                datasets: [{
+                    label: '유가 평균',
+                    data: priceData.value,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                return `${context.label}: ${value}원`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        // 차트가 이미 있으면 애니메이션 다시 실행
+        priceChart.reset();
+        priceChart.update();
+    }
+}
+
+// 페이지 로드 시 파이 차트 자동 표시
+window.addEventListener('DOMContentLoaded', function() {
+    showPieChart();
+});
+
